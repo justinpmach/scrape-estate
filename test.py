@@ -38,15 +38,15 @@ bedrooms_quantity = ['0', '1', '2', '3', '4plus']
 # bedrooms arg should be a string
 def get_page_content(zipcode, bedrooms=None, has_beds=False):
 	agent = {"User-Agent":'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'}
-	page = requests.get(get_formatted_location_url(zipcode), headers=agent)
+	page = requests.get(get_formatted_location_url(zipcode, bedrooms, has_beds), headers=agent)
 	# url = get_formatted_location_url(state, city)
-	if has_beds:
-		url = get_formatted_location_url(zipcode, bedrooms, has_beds)
-	else:
-		url = get_formatted_location_url(zipcode)
+	# if has_beds:
+	# 	url = get_formatted_location_url(zipcode, bedrooms, has_beds)
+	# else:
+	# 	url = get_formatted_location_url(zipcode)
 
 	# url = ('https://www.zillow.com/rental-manager/market-trends/san-marcos-ca/')
-	page = requests.get(url)
+	# page = requests.get(url)
 	# data = page.text
 	parsed_data = parse(page).string
 	# print(parsed_data)
@@ -74,7 +74,6 @@ def get_page_content(zipcode, bedrooms=None, has_beds=False):
 def parse(page):
 	soup = BeautifulSoup(page.content, 'html.parser')
 	sibling = soup.find(id="modal-root")
-	print('sibling: ', sibling)
 	next_sibling = sibling.find_next_sibling("script")
 	# print(type(next_sibling.string))
 	# print(next_sibling.string)
